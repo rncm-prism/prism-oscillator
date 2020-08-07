@@ -7,8 +7,10 @@ import { Sine } from "./sine";
 import TopBar from "./top-bar";
 import FrequencyLimitControls from "./freq-limit-ctrls";
 import Canvas from "./canvas";
+import SettingsDialog from './settings-dialog';
+import AboutDialog from './about-dialog';
 
-import { TOTAL_FREQ_RANGE } from "./constants";
+import { TOTAL_FREQ_RANGE, DEFAULT_OSC_TYPE } from "./constants";
 
 
 // https://stackoverflow.com/a/1527820/795131
@@ -25,12 +27,23 @@ const getRandFreq = (range, precision=3) => {
 const App = () => {
   const [freqRange, setFreqRange] = useState(TOTAL_FREQ_RANGE);
   const [freq, setFreq] = useState();
+
+  const initOscType = localStorage.getItem('oscType') || DEFAULT_OSC_TYPE;
+  const [oscType, setOscType] = useState(initOscType);
+
   const initFreq = getRandFreq(freqRange);
-  const sineRef = useRef( Sine(initFreq) );
+  const sineRef = useRef( Sine(oscType, initFreq) );
+
+  const [showSettingsDialog, toggleShowSettingsDialog] = useState(false);
+  const [showAboutDialog, toggleShowAboutDialog] = useState(false);
 
   useLayoutEffect(() => {
     freq && sineRef.current.update(freq);
   }, [freq]);
+
+  useLayoutEffect(() => {
+    oscType && sineRef.current.setOscType(oscType);
+  }, [oscType]);
 
   const toggleAudio = () => {
     sineRef.current.toggleAudio();
@@ -45,14 +58,33 @@ const App = () => {
     return sineRef.current.getWaveform();
   };
 
+  const toggleSettingsDialog = () => {
+    toggleShowSettingsDialog(!showSettingsDialog);
+  };
+
+  const toggleAboutDialog = () => {
+    toggleShowAboutDialog(!showAboutDialog);
+  };
+
+  const handleChangeOscType = (type) => {
+    localStorage.setItem('oscType', type);
+    setOscType(type);
+  };
+
   return (
     <div id="app">
-      <TopBar { ...{ toggleAudio, refresh } }/>
+      <TopBar { ...{ toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh } }/>
       <Container id="content" style={{padding: "0px"}}>
         <FrequencyLimitControls { ...{ freqRange, setFreqRange } }/>
         <Typography color="textSecondary" align="center">{`${freq || initFreq} Hz`}</Typography>
         <Canvas { ...{ freq, getWaveform } }/>
       </Container>
+      <SettingsDialog
+        isOpen={showSettingsDialog}
+        handleClose={toggleSettingsDialog}
+        handleChangeOscType={handleChangeOscType}
+      />
+      <AboutDialog isOpen={showAboutDialog} handleClose={toggleAboutDialog}/>
     </div>
   );
 }

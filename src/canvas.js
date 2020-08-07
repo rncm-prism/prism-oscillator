@@ -36,7 +36,7 @@ const drawWaveform = (canvas, getWaveform) => {
 
   const waveform = getWaveform();
 
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 3;
   ctx.strokeStyle= '#5661FA';
   ctx.beginPath();
 

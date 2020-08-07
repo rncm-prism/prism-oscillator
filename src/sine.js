@@ -1,6 +1,7 @@
-function Sine(freq=440, gain=0.6) {
+function Sine(type='sine', freq=440, gain=0.6) {
   const audioCtx = new AudioContext();
   const osc = audioCtx.createOscillator();
+  osc.type = type;
   osc.frequency.value = freq;
 
   const masterGain = audioCtx.createGain();
@@ -38,6 +39,10 @@ function Sine(freq=440, gain=0.6) {
       const waveform = new Float32Array(analyser.frequencyBinCount);
       analyser.getFloatTimeDomainData(waveform);
       return waveform;
+    },
+
+    setOscType: (type) => {
+      osc.type = type;
     }
 
   };

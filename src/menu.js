@@ -3,12 +3,18 @@ import "./style.css";
 
 import { Menu, MenuItem } from '@material-ui/core';
 
-//import AboutDialog from "./dialogs";
-
 
 const OptionsMenu = (props) => {
-  let { anchorElem, handleClose } = props;
-  let open = Boolean(anchorElem);
+  const { toggleSettingsDialog, toggleAboutDialog, anchorElem, handleClose } = props;
+  const open = Boolean(anchorElem);
+  const handleOpenSettingsDialog = () => {
+    toggleSettingsDialog();
+    handleClose();
+  };
+  const handleOpenAboutDialog = () => {
+    toggleAboutDialog();
+    handleClose();
+  };
   return (
     <Menu
       id="options-menu"
@@ -25,9 +31,8 @@ const OptionsMenu = (props) => {
       open={open}
       onClose={handleClose}
     >
-      <MenuItem onClick={handleClose}>Connect...</MenuItem>
-      <MenuItem onClick={handleClose}>Settings...</MenuItem>
-      <MenuItem onClick={handleClose}>About</MenuItem>
+      <MenuItem onClick={handleOpenSettingsDialog}>Settings...</MenuItem>
+      <MenuItem onClick={handleOpenAboutDialog}>About</MenuItem>
    </Menu>
   )
 }
