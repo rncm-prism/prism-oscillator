@@ -30,7 +30,7 @@ const TopBar = (props) => {
           <MenuIcon />
         </IconButton>
         <OptionsMenu { ...{ toggleSettingsDialog, toggleAboutDialog, anchorElem } } handleClose={handleCloseMenu}/>
-        <Typography variant="h6" style={ {marginLeft: "10px", flexGrow: 1} }>Oscillator</Typography>
+        <Typography variant="h6" style={ {marginLeft: "10px", flexGrow: 1} }>PRiSM Oscillator</Typography>
         <IconButton color="inherit" aria-label="start" onClick={toggleAudio}>
           <PlayCircleOutlineIcon />
         </IconButton>

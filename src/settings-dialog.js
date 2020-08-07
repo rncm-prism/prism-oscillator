@@ -5,7 +5,7 @@ import { Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/
 import { makeStyles } from '@material-ui/core/styles';
 import DialogComponent from './dialog-component';
 
-import { DEFAULT_OSC_TYPE } from "./constants";
+import { OSC_TYPES, DEFAULT_OSC_TYPE } from "./constants";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,18 +21,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const capitalizeFirstLetter = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 const OscillatorTypeSettings = (props) => {
   const { value='sine', handleChange } = props;
   const classes = useStyles();
+  const options = OSC_TYPES.map(type => {
+    let content = capitalizeFirstLetter(type);
+    return <MenuItem value={type}>{content}</MenuItem>;
+  });
   return (
     <form className={classes.form} noValidate>
       <FormControl className={classes.formControl}>
         <InputLabel htmlFor="osc-type-select">Oscillator Type</InputLabel>
         <Select name='osc-type-select' autoFocus value={value} onChange={handleChange}>
-          <MenuItem value="sine">Sine</MenuItem>
-          <MenuItem value="square">Square</MenuItem>
-          <MenuItem value="triangle">Triangle</MenuItem>
-          <MenuItem value="sawtooth">Sawtooth</MenuItem>
+          { options }
         </Select>
       </FormControl>
     </form>
