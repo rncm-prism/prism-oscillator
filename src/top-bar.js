@@ -3,8 +3,8 @@ import "./style.css";
 
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -24,6 +24,8 @@ const TopBar = (props) => {
     setAnchorElem(null);
   }
 
+  const audioBtnTitle = hasAudio==false ? "Unmute" : "Mute";
+
   return (
     <AppBar position="static" >
       <Toolbar>
@@ -32,10 +34,10 @@ const TopBar = (props) => {
         </IconButton>
         <OptionsMenu { ...{ toggleSettingsDialog, toggleAboutDialog, anchorElem } } handleClose={handleCloseMenu}/>
         <Typography variant="h6" style={ {marginLeft: "10px", flexGrow: 1} }>PRiSM Oscillator</Typography>
-        <IconButton color="inherit" aria-label="start" onClick={toggleAudio}>
-          { hasAudio==false ? <PlayCircleOutlineIcon /> : <RadioButtonCheckedIcon /> }
+        <IconButton color="inherit" aria-label="toggle-audio" title={audioBtnTitle} onClick={toggleAudio}>
+          { hasAudio==false ? <VolumeOffIcon/> : <VolumeUpIcon /> }
         </IconButton>
-        <IconButton color="inherit" aria-label="refresh" onClick={refresh}>
+        <IconButton color="inherit" aria-label="refresh" title="Refresh" onClick={refresh}>
           <RefreshIcon />
         </IconButton>
       </Toolbar>
