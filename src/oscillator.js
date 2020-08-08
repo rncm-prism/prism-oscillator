@@ -25,6 +25,7 @@ function Oscillator(type='sine', freq=440, gain=0.6) {
           masterGain.connect(audioCtx.destination);
       }
       hasAudio = !hasAudio;
+      return hasAudio;
     },
     
     kill: () => {

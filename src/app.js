@@ -34,6 +34,8 @@ const App = () => {
   const initFreq = getRandFreq(freqRange);
   const oscRef = useRef( Oscillator(oscType, initFreq) );
 
+  const [hasAudio, setHasAudio] = useState(false);
+
   const [showSettingsDialog, toggleShowSettingsDialog] = useState(false);
   const [showAboutDialog, toggleShowAboutDialog] = useState(false);
 
@@ -46,7 +48,7 @@ const App = () => {
   }, [oscType]);
 
   const toggleAudio = () => {
-    oscRef.current.toggleAudio();
+    setHasAudio(oscRef.current.toggleAudio());
   };
 
   const refresh = () => {
@@ -73,7 +75,7 @@ const App = () => {
 
   return (
     <div id="app">
-      <TopBar { ...{ toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh } }/>
+      <TopBar { ...{ toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio } }/>
       <Container id="content" style={{padding: "0px"}}>
         <FrequencyLimitControls { ...{ freqRange, setFreqRange } }/>
         <Typography color="textSecondary" align="center">{`${freq || initFreq} Hz`}</Typography>

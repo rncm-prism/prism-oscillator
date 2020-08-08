@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
 
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -13,8 +14,8 @@ import OptionsMenu from "./menu";
 
 
 const TopBar = (props) => {
-  let { toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh } = props
-  const [anchorElem, setAnchorElem] = React.useState(null);
+  let { toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio } = props
+  const [anchorElem, setAnchorElem] = useState(null);
 
   const handleOpenMenu = (event) => {
     setAnchorElem(event.currentTarget);
@@ -32,7 +33,7 @@ const TopBar = (props) => {
         <OptionsMenu { ...{ toggleSettingsDialog, toggleAboutDialog, anchorElem } } handleClose={handleCloseMenu}/>
         <Typography variant="h6" style={ {marginLeft: "10px", flexGrow: 1} }>PRiSM Oscillator</Typography>
         <IconButton color="inherit" aria-label="start" onClick={toggleAudio}>
-          <PlayCircleOutlineIcon />
+          { hasAudio==false ? <PlayCircleOutlineIcon /> : <RadioButtonCheckedIcon /> }
         </IconButton>
         <IconButton color="inherit" aria-label="refresh" onClick={refresh}>
           <RefreshIcon />
@@ -45,7 +46,7 @@ const TopBar = (props) => {
 // Use this version if we put the play and
 // refresh buttons at the bottom.
 const TopBar2 = () => {
-  const [anchorElem, setAnchorElem] = React.useState(null);
+  const [anchorElem, setAnchorElem] = useState(null);
 
   const handleOpenMenu = (event) => {
     setAnchorElem(event.currentTarget);
