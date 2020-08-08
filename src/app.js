@@ -3,7 +3,7 @@ import "./style.css";
 
 import { Typography, Container } from '@material-ui/core';
 
-import { Sine } from "./sine";
+import { Oscillator } from "./oscillator";
 import TopBar from "./top-bar";
 import FrequencyLimitControls from "./freq-limit-ctrls";
 import Canvas from "./canvas";
@@ -32,21 +32,21 @@ const App = () => {
   const [oscType, setOscType] = useState(initOscType);
 
   const initFreq = getRandFreq(freqRange);
-  const sineRef = useRef( Sine(oscType, initFreq) );
+  const oscRef = useRef( Oscillator(oscType, initFreq) );
 
   const [showSettingsDialog, toggleShowSettingsDialog] = useState(false);
   const [showAboutDialog, toggleShowAboutDialog] = useState(false);
 
   useLayoutEffect(() => {
-    freq && sineRef.current.update(freq);
+    freq && oscRef.current.update(freq);
   }, [freq]);
 
   useLayoutEffect(() => {
-    oscType && sineRef.current.setOscType(oscType);
+    oscType && oscRef.current.setOscType(oscType);
   }, [oscType]);
 
   const toggleAudio = () => {
-    sineRef.current.toggleAudio();
+    oscRef.current.toggleAudio();
   };
 
   const refresh = () => {
@@ -55,7 +55,7 @@ const App = () => {
   };
 
   const getWaveform = () => {
-    return sineRef.current.getWaveform();
+    return oscRef.current.getWaveform();
   };
 
   const toggleSettingsDialog = () => {

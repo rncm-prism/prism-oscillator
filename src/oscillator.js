@@ -1,4 +1,4 @@
-function Sine(type='sine', freq=440, gain=0.6) {
+function Oscillator(type='sine', freq=440, gain=0.6) {
   const audioCtx = new AudioContext();
   const osc = audioCtx.createOscillator();
   osc.type = type;
@@ -49,4 +49,4 @@ function Sine(type='sine', freq=440, gain=0.6) {
 
 }
 
-export { Sine }
+export { Oscillator }

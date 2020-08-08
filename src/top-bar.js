@@ -61,7 +61,7 @@ const TopBar2 = () => {
           <MenuIcon />
         </IconButton>
         <OptionsMenu anchorElem={anchorElem} handleClose={handleCloseMenu}/>
-        <Typography variant="h6" style={ {marginLeft: "10px", flexGrow: 1} }>Sine Generator</Typography>
+        <Typography variant="h6" style={ {marginLeft: "10px", flexGrow: 1} }>PRiSM Oscillator</Typography>
         <IconButton color="inherit" aria-label="start" >
             <InfoIcon />
         </IconButton>
