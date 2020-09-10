@@ -1,0 +1,13 @@
+{
+  "appId": "com.prism.oscillator",
+  "appName": "prism-oscillator",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "public",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}

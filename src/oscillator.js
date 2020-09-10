@@ -1,18 +1,13 @@
+import * as Tone from "tone";
+
 function Oscillator(type='sine', freq=440, gain=0.6) {
-  const audioCtx = new AudioContext();
-  const osc = audioCtx.createOscillator();
-  osc.type = type;
-  osc.frequency.value = freq;
+  const osc = new Tone.Oscillator(freq, type)
+  const waveform = new Tone.Waveform();
 
-  const masterGain = audioCtx.createGain();
-  const analyser = audioCtx.createAnalyser();
-
-  osc.connect(analyser);
-  analyser.connect(masterGain);
-
-  masterGain.gain.value = gain;
-
-  osc.start();
+  const vol = new Tone.Volume(-12).toDestination();
+  osc.connect(vol).start();
+  vol.mute = true;
+  osc.connect(waveform);
 
   let hasAudio = false; 
 
@@ -20,16 +15,16 @@ function Oscillator(type='sine', freq=440, gain=0.6) {
 
     toggleAudio: () => {
       if (!!hasAudio) {
-        masterGain.disconnect();
+        vol.mute = true;
       } else {
-          masterGain.connect(audioCtx.destination);
+        vol.mute = false;
       }
       hasAudio = !hasAudio;
       return hasAudio;
     },
     
     kill: () => {
-      osc.stop(audioCtx.currentTime + 0.5);
+      osc.stop("+0.5");
     },
     
     update: (freq) => {
@@ -37,9 +32,7 @@ function Oscillator(type='sine', freq=440, gain=0.6) {
     },
     
     getWaveform: () => {
-      const waveform = new Float32Array(analyser.frequencyBinCount);
-      analyser.getFloatTimeDomainData(waveform);
-      return waveform;
+      return waveform.getValue();
     },
 
     setOscType: (type) => {
