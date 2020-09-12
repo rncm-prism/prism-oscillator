@@ -10,8 +10,8 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
-    width: 336,
-    maxWidth: 336
+    width: 236,
+    maxWidth: 236
   },
   textContent: {
     marginTop: 24
@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const cmLink = <a href="https://www.rncm.ac.uk/people/christopher-melen/">Dr Christopher Melen</a>;
 const prismLink = <a href="https://www.rncm.ac.uk/research/research-centres-rncm/prism/">PRiSM</a>;
+const ninaLink = <a href="http://ninawhiteman.com/">Dr Nina Whiteman</a>
 
 const AboutDialog = (props) => {
   const { isOpen, handleClose } = props;
@@ -29,7 +30,8 @@ const AboutDialog = (props) => {
     <DialogComponent title="About" isOpen={isOpen} handleClose={handleClose} buttons={buttons}>
       <img src="/PRiSM-Logo-text-01-768x329.png" className={classes.logo}/>
       <DialogContentText className={classes.textContent}>
-        Designed and developed by {cmLink} of {prismLink}. With thanks to the PRiSM team, and Dr Nina Whiteman.
+        <p>Designed and developed by {cmLink} of {prismLink}, from an original concept by composer {ninaLink}.</p>
+        <p>With thanks to the PRiSM team, and Dr Nina Whiteman.</p>
       </DialogContentText>
     </DialogComponent>
   );

@@ -2,9 +2,20 @@ import React from "react";
 import "./style.css";
 
 import { Typography, Grid, Slider, Tooltip } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { TOTAL_FREQ_RANGE } from "./constants";
 
+
+const useStyles = makeStyles((theme) => ({
+  grid: {
+    marginTop: "18px",
+    fontStyle: "italic"
+  },
+  slider: {
+    width: "95%"
+  }
+}));
 
 const ValueLabelComponent = (props) => {
   const { children, open, value } = props;
@@ -28,6 +39,7 @@ const freqToSliderVal = (freq, range) => {
 }
 
 const FrequencyLimitControls = (props) => {
+  const classes = useStyles();
   const { freqRange, setFreqRange } = props;
   const range = freqRange.map(freq => freqToSliderVal(freq, TOTAL_FREQ_RANGE));
   const handleChange = (e, vals) => {
@@ -35,12 +47,11 @@ const FrequencyLimitControls = (props) => {
     setFreqRange(newFreqRange);
   }
 
-  const style = { marginTop: "18px", fontStyle: "italic" }
-
   return (
-    <Grid container direction="column" justify="center" alignItems="center" style={style}>
+    <Grid container className={classes.grid} direction="column" justify="center" alignItems="center">
       <Typography color="textSecondary">Adjust sliders to set frequency range...</Typography>
       <Slider
+        className={classes.slider}
         id="freq-range-selector"
         ValueLabelComponent={ValueLabelComponent}
         value={ [ ...range ] }

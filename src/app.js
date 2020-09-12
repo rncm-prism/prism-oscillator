@@ -1,7 +1,8 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
 import "./style.css";
 
-import { Typography, Container } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { Oscillator } from "./oscillator";
 import TopBar from "./top-bar";
@@ -24,7 +25,31 @@ const getRandFreq = (range, precision=3) => {
   return freq.toFixed(precision);
 }
 
+const useStyles = makeStyles((theme) => ({
+  app: {
+    margin: 0, //"1rem",
+    padding: 0,
+    fontFamily: "sans-serif",
+    height: "100%",
+    minHeight: "100%",
+    maxHeight: "100%",
+    display: "flex",
+    flexDirection: "column"
+  },
+  //ctrls: {
+    //padding: "0px 20px"
+  //},
+  main: {
+    display: "flex",
+    flex: 1,
+    padding: "10px 20px 15px",
+    justifyContent: "center"
+  }
+}));
+
 const App = () => {
+  const classes = useStyles();
+
   const [freqRange, setFreqRange] = useState(TOTAL_FREQ_RANGE);
   const [freq, setFreq] = useState();
 
@@ -74,20 +99,22 @@ const App = () => {
   };
 
   return (
-    <div id="app">
+    <Box className={classes.app}>
       <TopBar { ...{ toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio } }/>
-      <Container id="content" style={{padding: "0px"}}>
+      <Box className={classes.ctrls}>
         <FrequencyLimitControls { ...{ freqRange, setFreqRange } }/>
         <Typography color="textSecondary" align="center">{`${freq || initFreq} Hz`}</Typography>
+      </Box>
+      <Box className={classes.main}>
         <Canvas { ...{ freq, getWaveform } }/>
-      </Container>
+      </Box>
       <SettingsDialog
         isOpen={showSettingsDialog}
         handleClose={toggleSettingsDialog}
         handleChangeOscType={handleChangeOscType}
       />
       <AboutDialog isOpen={showAboutDialog} handleClose={toggleAboutDialog}/>
-    </div>
+    </Box>
   );
 }
 

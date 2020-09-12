@@ -1,6 +1,17 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import "./style.css";
 
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  waveform: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
+    minWidth: "100%",
+    padding: 0
+  }
+}));
 
 const fitToParent = (elem) => {
   let { parentNode } = elem;
@@ -40,8 +51,10 @@ const drawWaveform = (canvas, getWaveform) => {
   ctx.strokeStyle= '#5661FA';
   ctx.beginPath();
 
+  const wfScale =  w / waveform.length;
+
   for(let i = 0; i < waveform.length; i++) {
-    const x = i;
+    const x = i * wfScale;
     const y = ( 0.5 + (waveform[i] / 2) ) * h;
 		if (i == 0) {
       ctx.moveTo(x, y);
@@ -54,8 +67,7 @@ const drawWaveform = (canvas, getWaveform) => {
 
 const Canvas = ({ freq, getWaveform }) => {
 
-  const style = {paddingTop: "5px", paddingBottom: "5px", marginTop: "10px"};
-
+  const classes = useStyles();
   const canvasRef = useRef();
 
   useLayoutEffect(() => {
@@ -63,13 +75,13 @@ const Canvas = ({ freq, getWaveform }) => {
     fitToParent(canvas);
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let canvas = canvasRef.current;
     drawWaveform(canvas, getWaveform);
   }, [freq])
 
   return (
-    <canvas id="canvas" ref={canvasRef} style={style}></canvas>
+    <canvas className={classes.waveform} id="canvas" ref={canvasRef} ></canvas>
   )
 }
   
