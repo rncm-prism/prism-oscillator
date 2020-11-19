@@ -94,13 +94,13 @@ const App = () => {
   };
 
   const handleChangeOscType = (type) => {
-    localStorage.setItem('oscType', type);
-    setOscType(type);
+    setOscType(type.toLowerCase());
+    localStorage.setItem('oscType', oscType);
   };
 
   return (
     <Box className={classes.app}>
-      <TopBar { ...{ toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio } }/>
+      <TopBar { ...{ toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio, oscType, handleChangeOscType } }/>
       <Box className={classes.ctrls}>
         <FrequencyLimitControls { ...{ freqRange, setFreqRange } }/>
         <Typography color="textSecondary" align="center">{`${freq || initFreq} Hz`}</Typography>

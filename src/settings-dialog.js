@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import "./style.css";
-
-import { Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import React, { useContext } from "react";
+import { Button, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DialogComponent from './dialog-component';
-
-import { OSC_TYPES, DEFAULT_OSC_TYPE } from "./constants";
+import { AppThemeContext } from './themes/provider';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,44 +18,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const capitalizeFirstLetter = (str) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-const OscillatorTypeSettings = (props) => {
-  const { value='sine', handleChange } = props;
-  const classes = useStyles();
-  const options = OSC_TYPES.map(type => {
-    let content = capitalizeFirstLetter(type);
-    return <MenuItem value={type}>{content}</MenuItem>;
-  });
-  return (
-    <form className={classes.form} noValidate>
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="osc-type-select">Oscillator Type</InputLabel>
-        <Select name='osc-type-select' autoFocus value={value} onChange={handleChange}>
-          { options }
-        </Select>
-      </FormControl>
-    </form>
-  )
-}
-
 const SettingsDialog = (props) => {
-  let { isOpen, handleClose, handleChangeOscType } = props;
-  const initOscType = localStorage.getItem('oscType') || DEFAULT_OSC_TYPE;
-  const [oscType, setOscType] = useState(initOscType);
-  const handleApply = () => {
-    handleChangeOscType(oscType);
-    handleClose();
-  }
+  let { isOpen, handleClose } = props;
+  const classes = useStyles()
+
   const buttons = [
     <Button onClick={handleClose}>Close</Button>,
-    <Button onClick={handleApply}>Apply</Button>
   ];
+  
+  const { currentTheme, setTheme } = useContext(AppThemeContext)
+
+  const handleChangeTheme = (e) => {
+    setTheme(e.target.value)
+  }
+
   return (
     <DialogComponent title="Settings" isOpen={isOpen} handleClose={handleClose} buttons={buttons}>
-      <OscillatorTypeSettings value={oscType} handleChange={(e) => setOscType(e.target.value)}/>
+      <form className={classes.form} noValidate>
+        <FormControl className={classes.formControl} component="fieldset">
+          <FormLabel component="legend">Choose Theme:</FormLabel>
+          <RadioGroup aria-label="theme" name="theme" value={currentTheme} onChange={handleChangeTheme}>
+            <FormControlLabel value="light" control={<Radio />} label="Light" />
+            <FormControlLabel value="dark" control={<Radio />} label="Dark" />
+          </RadioGroup>
+        </FormControl>
+      </form>
     </DialogComponent>
   );
 }
