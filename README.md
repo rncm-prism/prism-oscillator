@@ -1,4 +1,4 @@
-# PRiSM Oscillator App
+# PRiSM Oscillator
 
 A simple mobile app for generating and visualizing audio waveforms. Targets iOS and Android.
 
