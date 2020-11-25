@@ -17,6 +17,10 @@ import { OSC_TYPES } from "./constants";
 
 
 const useStyles = makeStyles((theme) => ({
+  iconBtn: {
+    paddingLeft: 8,
+    paddingRight: 8
+  },
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -54,9 +58,9 @@ const OscillatorTypeSelector = (props) => {
     handleCloseMenu();
   }
 
-  const options = OSC_TYPES.map(type => {
+  const options = OSC_TYPES.map((type, i) => {
     let content = capitalizeFirstLetter(type);
-    return <MenuItem value={type} onClick={handleOnClick}>{content}</MenuItem>;
+    return <MenuItem value={type} key={i} onClick={handleOnClick}>{content}</MenuItem>;
   });
 
   return (
@@ -89,6 +93,8 @@ const OscillatorTypeSelector = (props) => {
 }
 
 const TopBar = (props) => {
+  const classes = useStyles();
+
   let { toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio, oscType, handleChangeOscType } = props
   const [anchorElem, setAnchorElem] = useState(null);
 
@@ -108,12 +114,12 @@ const TopBar = (props) => {
           <MenuIcon />
         </IconButton>
         <OptionsMenu { ...{ toggleSettingsDialog, toggleAboutDialog, anchorElem } } handleClose={handleCloseMenu}/>
-        <Typography variant="h6" style={ {marginLeft: "10px", flexGrow: 1} }>PRiSM Oscillator</Typography>
+        <Typography variant="h6" style={ {marginLeft: "5px", flexGrow: 1} }>Oscillator</Typography>
         <OscillatorTypeSelector value={oscType} handleChange={(e) => handleChangeOscType(e.target.textContent)}/>
-        <IconButton color="inherit" aria-label="toggle-audio" title={audioBtnTitle} onClick={toggleAudio}>
+        <IconButton className={classes.iconBtn} color="inherit" aria-label="toggle-audio" title={audioBtnTitle} onClick={toggleAudio}>
           { hasAudio==false ? <VolumeOffIcon/> : <VolumeUpIcon /> }
         </IconButton>
-        <IconButton color="inherit" aria-label="refresh" title="Refresh" onClick={refresh}>
+        <IconButton className={classes.iconBtn} color="inherit" aria-label="refresh" title="Refresh" onClick={refresh}>
           <RefreshIcon />
         </IconButton>
       </Toolbar>

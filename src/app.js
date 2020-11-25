@@ -19,10 +19,16 @@ const getRandomValueInRange = (min, max) => {
   return Math.random() * (max - min) + min;
 }
 
-const getRandFreq = (range, precision=3) => {
+const getRandFreqOLD = (range, precision=3) => {
   let [bottomFreq, topFreq] = range;
   let freq = getRandomValueInRange(bottomFreq, topFreq + 1);
   return freq.toFixed(precision);
+}
+
+const getRandFreq = (range, precision=3) => {
+  let [bottomFreq, topFreq] = range;
+  let freq = getRandomValueInRange(bottomFreq, topFreq + 1);
+  return Math.floor(freq);
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -36,9 +42,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column"
   },
-  //ctrls: {
-    //padding: "0px 20px"
-  //},
+  ctrls: {
+    padding: "0px 20px"
+  },
   main: {
     display: "flex",
     flex: 1,

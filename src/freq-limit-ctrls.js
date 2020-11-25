@@ -9,11 +9,12 @@ import { TOTAL_FREQ_RANGE } from "./constants";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
-    marginTop: "18px",
+    marginTop: "16px",
     fontStyle: "italic"
   },
   slider: {
-    width: "95%"
+    paddingTop: 16,
+    paddingBottom: 16
   }
 }));
 
@@ -49,7 +50,7 @@ const FrequencyLimitControls = (props) => {
 
   return (
     <Grid container className={classes.grid} direction="column" justify="center" alignItems="center">
-      <Typography color="textSecondary">Adjust sliders to set frequency range...</Typography>
+      <Typography color="textSecondary">Drag sliders to adjust range (Hz)...</Typography>
       <Slider
         className={classes.slider}
         id="freq-range-selector"

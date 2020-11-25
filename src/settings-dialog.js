@@ -21,10 +21,6 @@ const useStyles = makeStyles((theme) => ({
 const SettingsDialog = (props) => {
   let { isOpen, handleClose } = props;
   const classes = useStyles()
-
-  const buttons = [
-    <Button onClick={handleClose}>Close</Button>,
-  ];
   
   const { currentTheme, setTheme } = useContext(AppThemeContext)
 
@@ -33,7 +29,7 @@ const SettingsDialog = (props) => {
   }
 
   return (
-    <DialogComponent title="Settings" isOpen={isOpen} handleClose={handleClose} buttons={buttons}>
+    <DialogComponent title="Settings" isOpen={isOpen} handleClose={handleClose}>
       <form className={classes.form} noValidate>
         <FormControl className={classes.formControl} component="fieldset">
           <FormLabel component="legend">Choose Theme:</FormLabel>
