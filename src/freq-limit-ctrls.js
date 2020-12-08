@@ -14,7 +14,10 @@ const useStyles = makeStyles((theme) => ({
   },
   slider: {
     paddingTop: 16,
-    paddingBottom: 16
+    paddingBottom: 0
+  },
+  rangeDisplay: {
+    minWidth: 30
   }
 }));
 
@@ -39,7 +42,7 @@ const freqToSliderVal = (freq, range) => {
   return (freq-bottomFreq)/freqRange * 100;
 }
 
-const FrequencyLimitControls = (props) => {
+const FrequencyLimitControlsOLD = (props) => {
   const classes = useStyles();
   const { freqRange, setFreqRange } = props;
   const range = freqRange.map(freq => freqToSliderVal(freq, TOTAL_FREQ_RANGE));
@@ -61,6 +64,39 @@ const FrequencyLimitControls = (props) => {
         valueLabelDisplay="auto"
         valueLabelFormat={(x)=>`${sliderValToFreq(x, TOTAL_FREQ_RANGE)}Hz`}
       />
+    </Grid>
+  )
+}
+
+const FrequencyLimitControls = (props) => {
+  const classes = useStyles();
+
+  const { freqRange, setFreqRange } = props;
+  const range = freqRange.map(freq => freqToSliderVal(freq, TOTAL_FREQ_RANGE));
+  const bottomFreq = sliderValToFreq(range[0], TOTAL_FREQ_RANGE);
+  const topFreq = sliderValToFreq(range[1], TOTAL_FREQ_RANGE);
+
+  const handleChange = (e, vals) => {
+    let newFreqRange = vals.map(val => sliderValToFreq(val, TOTAL_FREQ_RANGE));
+    setFreqRange(newFreqRange);
+  }
+
+
+  return (
+    <Grid container className={classes.grid} direction="column" justify="center" alignItems="center">
+      <Typography color="textSecondary">Drag sliders to adjust range (Hz)...</Typography>
+      <Grid container direction="row" spacing={2} alignItems="center" justify="space-between">
+        <Grid item className={classes.rangeDisplay} xs><Typography color="textSecondary" align="right">{bottomFreq}</Typography></Grid>
+        <Grid item xs={9}>
+          <Slider
+            className={classes.slider}
+            id="freq-range-selector"
+            value={ [ ...range ] }
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item className={classes.rangeDisplay} xs><Typography color="textSecondary">{topFreq}</Typography></Grid>
+      </Grid>
     </Grid>
   )
 }

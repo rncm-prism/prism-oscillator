@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import "./style.css";
 
-import { AppBar, Toolbar, IconButton, Typography, MenuItem, Button, Menu, Tooltip } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, MenuItem, Button, Menu } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
@@ -65,12 +65,10 @@ const OscillatorTypeSelector = (props) => {
 
   return (
     <Fragment>
-      <Tooltip title="Change Oscillator Type" enterDelay={300}>
-        <Button id="osc-type-select" color="inherit" onClick={handleOpenMenu}>
-          <span className={classes.oscType}>{ value }</span>
-          <ExpandMoreIcon fontSize="small" />
-        </Button>
-      </Tooltip>
+      <Button id="osc-type-select" color="inherit" onClick={handleOpenMenu}>
+        <span className={classes.oscType}>{ value }</span>
+        <ExpandMoreIcon fontSize="small" />
+      </Button>
       <Menu
         value={value}
         anchorEl={anchorElem}
@@ -95,31 +93,45 @@ const OscillatorTypeSelector = (props) => {
 const TopBar = (props) => {
   const classes = useStyles();
 
-  let { toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio, oscType, handleChangeOscType } = props
-  const [anchorElem, setAnchorElem] = useState(null);
+  let { handleDrawerOpen, toggleAudio, refresh, hasAudio, oscType, handleChangeOscType } = props
 
-  const handleOpenMenu = (event) => {
-    setAnchorElem(event.currentTarget);
-  }
-  const handleCloseMenu = () => {
-    setAnchorElem(null);
-  }
-
-  const audioBtnTitle = hasAudio==false ? "Unmute" : "Mute";
+  //const audioBtnTitle = hasAudio==false ? "Unmute" : "Mute";
 
   return (
     <AppBar position="static" >
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleOpenMenu}>
+        <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerOpen}>
           <MenuIcon />
         </IconButton>
-        <OptionsMenu { ...{ toggleSettingsDialog, toggleAboutDialog, anchorElem } } handleClose={handleCloseMenu}/>
         <Typography variant="h6" style={ {marginLeft: "5px", flexGrow: 1} }>Oscillator</Typography>
         <OscillatorTypeSelector value={oscType} handleChange={(e) => handleChangeOscType(e.target.textContent)}/>
-        <IconButton className={classes.iconBtn} color="inherit" aria-label="toggle-audio" title={audioBtnTitle} onClick={toggleAudio}>
+        <IconButton className={classes.iconBtn} color="inherit" aria-label="toggle-audio" onClick={toggleAudio}>
           { hasAudio==false ? <VolumeOffIcon/> : <VolumeUpIcon /> }
         </IconButton>
-        <IconButton className={classes.iconBtn} color="inherit" aria-label="refresh" title="Refresh" onClick={refresh}>
+        <IconButton className={classes.iconBtn} color="inherit" aria-label="refresh" onClick={refresh}>
+          <RefreshIcon />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+  )
+}
+
+const TopBar1 = (props) => {
+  const classes = useStyles();
+
+  let { handleDrawerOpen } = props;
+
+  return (
+    <AppBar position="static" >
+      <Toolbar>
+        <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerOpen}>
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" style={ {marginLeft: "5px", flexGrow: 1} }>Oscillator</Typography>
+        <IconButton className={classes.iconBtn} color="inherit" aria-label="toggle-audio" >
+          <VolumeUpIcon />
+        </IconButton>
+        <IconButton className={classes.iconBtn} color="inherit" aria-label="refresh" title="Refresh">
           <RefreshIcon />
         </IconButton>
       </Toolbar>

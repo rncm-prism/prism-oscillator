@@ -8,8 +8,11 @@ import { Oscillator } from "./oscillator";
 import TopBar from "./top-bar";
 import FrequencyLimitControls from "./freq-limit-ctrls";
 import Canvas from "./canvas";
+import HelpDialog from './help-dialog';
 import SettingsDialog from './settings-dialog';
 import AboutDialog from './about-dialog';
+import SideBar from "./sidebar";
+import { useScreenOrientation } from "./orientation";
 
 import { TOTAL_FREQ_RANGE, DEFAULT_OSC_TYPE } from "./constants";
 
@@ -54,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
+  const orientation = useScreenOrientation();
   const classes = useStyles();
 
   const [freqRange, setFreqRange] = useState(TOTAL_FREQ_RANGE);
@@ -67,6 +71,9 @@ const App = () => {
 
   const [hasAudio, setHasAudio] = useState(false);
 
+  const [sideBarOpen, setSideBarOpen] = useState(false);
+
+  const [showHelpDialog, toggleShowHelpDialog] = useState(false);
   const [showSettingsDialog, toggleShowSettingsDialog] = useState(false);
   const [showAboutDialog, toggleShowAboutDialog] = useState(false);
 
@@ -76,6 +83,7 @@ const App = () => {
 
   useLayoutEffect(() => {
     oscType && oscRef.current.setOscType(oscType);
+    localStorage.setItem('oscType', oscType);
   }, [oscType]);
 
   const toggleAudio = () => {
@@ -91,6 +99,18 @@ const App = () => {
     return oscRef.current.getWaveform();
   };
 
+  const handleDrawerOpen = () => {
+    setSideBarOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setSideBarOpen(false);
+  };
+
+  const toggleHelpDialog = () => {
+    toggleShowHelpDialog(!showHelpDialog);
+  };
+
   const toggleSettingsDialog = () => {
     toggleShowSettingsDialog(!showSettingsDialog);
   };
@@ -101,12 +121,13 @@ const App = () => {
 
   const handleChangeOscType = (type) => {
     setOscType(type.toLowerCase());
-    localStorage.setItem('oscType', oscType);
+    //localStorage.setItem('oscType', oscType);
   };
 
   return (
     <Box className={classes.app}>
-      <TopBar { ...{ toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio, oscType, handleChangeOscType } }/>
+      <TopBar { ...{ handleDrawerOpen, toggleAudio, refresh, hasAudio, oscType, handleChangeOscType } }/>
+      <SideBar open={sideBarOpen} onClose={handleDrawerClose} { ...{ toggleHelpDialog, toggleSettingsDialog, toggleAboutDialog } } />
       <Box className={classes.ctrls}>
         <FrequencyLimitControls { ...{ freqRange, setFreqRange } }/>
         <Typography color="textSecondary" align="center">{`${freq || initFreq} Hz`}</Typography>
@@ -114,12 +135,13 @@ const App = () => {
       <Box className={classes.main}>
         <Canvas { ...{ freq, getWaveform } }/>
       </Box>
+      <HelpDialog isOpen={showHelpDialog} handleClose={toggleHelpDialog}/>
       <SettingsDialog
         isOpen={showSettingsDialog}
         handleClose={toggleSettingsDialog}
         handleChangeOscType={handleChangeOscType}
       />
-      <AboutDialog isOpen={showAboutDialog} handleClose={toggleAboutDialog}/>
+      <AboutDialog isOpen={showAboutDialog} handleClose={toggleAboutDialog} orientation={orientation}/>
     </Box>
   );
 }
