@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css";
+//import "./style.css";
 
 import { Typography, Grid, Slider, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';

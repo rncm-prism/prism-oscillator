@@ -1,46 +1,62 @@
-import * as Tone from "tone";
+// Workaround for Safari, get it here: https://github.com/mohayonao/get-float-time-domain-data
+if (global.AnalyserNode && !global.AnalyserNode.prototype.getFloatTimeDomainData) {
+  var uint8 = new Uint8Array(2048);
+  global.AnalyserNode.prototype.getFloatTimeDomainData = function(array) {
+    this.getByteTimeDomainData(uint8);
+    for (var i = 0, imax = array.length; i < imax; i++) {
+      array[i] = (uint8[i] - 128) * 0.0078125;
+    }
+  };
+}
 
-function Oscillator(type='sine', freq=440, gain=0.6) {
-  const osc = new Tone.Oscillator(freq, type)
-  const waveform = new Tone.Waveform();
+function Oscillator(type='sine', freq=440, gain=0.015) {
 
-  const vol = new Tone.Volume(-12).toDestination();
-  osc.connect(vol).start();
-  vol.mute = true;
-  osc.connect(waveform);
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = audioCtx.createOscillator();
+  osc.type = type;
+  osc.frequency.value = freq;
 
-  let hasAudio = false; 
+  const masterGain = audioCtx.createGain();
+  const analyser = audioCtx.createAnalyser();
+
+  osc.connect(analyser);
+  analyser.connect(masterGain);
+
+  masterGain.gain.value = gain;
+
+  osc.start();
+
+  let waveform = new Float32Array(analyser.frequencyBinCount);
+  analyser.getFloatTimeDomainData(waveform);
 
   return {
 
-    toggleAudio: () => {
-      if (!!hasAudio) {
-        vol.mute = true;
-      } else {
-        vol.mute = false;
+    start: () => {
+      if (audioCtx.state != 'running') {
+        audioCtx.resume();
       }
-      hasAudio = !hasAudio;
-      return hasAudio;
+      masterGain.connect(audioCtx.destination);
     },
     
-    kill: () => {
-      osc.stop("+0.5");
+    stop: () => {
+      masterGain.disconnect();
     },
     
-    update: (freq) => {
+    setFreq: (freq) => {
       osc.frequency.value = freq;
-    },
-    
-    getWaveform: () => {
-      return waveform.getValue();
     },
 
     setOscType: (type) => {
       osc.type = type;
+    },
+
+    getWaveform: () => {
+      analyser.getFloatTimeDomainData(waveform);
+      return waveform;
     }
 
   };
 
 }
 
-export { Oscillator }
+export let osc = Oscillator();

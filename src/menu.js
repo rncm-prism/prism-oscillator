@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css";
+//import "./style.css";
 
 import { Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';

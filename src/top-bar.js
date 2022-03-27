@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import "./style.css";
+//import "./style.css";
 
 import { AppBar, Toolbar, IconButton, Typography, MenuItem, Button, Menu, Tooltip } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -95,7 +95,7 @@ const OscillatorTypeSelector = (props) => {
 const TopBar = (props) => {
   const classes = useStyles();
 
-  let { toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio, oscType, handleChangeOscType } = props
+  let { toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio, oscType, handleHasAudio, handleChangeOscType } = props
   const [anchorElem, setAnchorElem] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -114,44 +114,13 @@ const TopBar = (props) => {
           <MenuIcon />
         </IconButton>
         <OptionsMenu { ...{ toggleSettingsDialog, toggleAboutDialog, anchorElem } } handleClose={handleCloseMenu}/>
-        <Typography variant="h6" style={ {marginLeft: "5px", flexGrow: 1} }>Oscillator</Typography>
-        <OscillatorTypeSelector value={oscType} handleChange={(e) => handleChangeOscType(e.target.textContent)}/>
-        <IconButton className={classes.iconBtn} color="inherit" aria-label="toggle-audio" title={audioBtnTitle} onClick={toggleAudio}>
-          { hasAudio==false ? <VolumeOffIcon/> : <VolumeUpIcon /> }
+        <Typography variant="h6" style={ {marginLeft: "5px", flexGrow: 1} }>PRiSM Oscillator</Typography>
+        <OscillatorTypeSelector value={oscType} handleChange={(e) => handleChangeOscType(e)}/>
+        <IconButton className={classes.iconBtn} color="inherit" aria-label="toggle-audio" title={audioBtnTitle} onClick={handleHasAudio}>
+          { hasAudio ? <VolumeOffIcon/> : <VolumeUpIcon /> }
         </IconButton>
         <IconButton className={classes.iconBtn} color="inherit" aria-label="refresh" title="Refresh" onClick={refresh}>
           <RefreshIcon />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
-  )
-}
-
-// Use this version if we put the play and
-// refresh buttons at the bottom.
-const TopBar2 = () => {
-  const [anchorElem, setAnchorElem] = useState(null);
-
-  const handleOpenMenu = (event) => {
-    setAnchorElem(event.currentTarget);
-  }
-  const handleCloseMenu = () => {
-    setAnchorElem(null);
-  }
-
-  return (
-    <AppBar position="static" >
-      <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleOpenMenu}>
-          <MenuIcon />
-        </IconButton>
-        <OptionsMenu anchorElem={anchorElem} handleClose={handleCloseMenu}/>
-        <Typography variant="h6" style={ {marginLeft: "10px", flexGrow: 1} }>PRiSM Oscillator</Typography>
-        <IconButton color="inherit" aria-label="start" >
-            <InfoIcon />
-        </IconButton>
-        <IconButton color="inherit" aria-label="refresh" >
-            <SettingsIcon />
         </IconButton>
       </Toolbar>
     </AppBar>
