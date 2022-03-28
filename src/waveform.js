@@ -11,7 +11,7 @@ const Waveform = ({ hasAudio }) => {
     const ctx = canvas.getContext("2d");
     const w = canvas.width
     const h = canvas.height
-    ctx.lineWidth = 0.5;
+    ctx.lineWidth = 0.25;
     ctx.beginPath();
     ctx.moveTo(0, h/2);
     ctx.lineTo(w, h/2);
@@ -34,7 +34,7 @@ const Waveform = ({ hasAudio }) => {
   
     const waveform = osc.getWaveform();
   
-    ctx.lineWidth = 3;
+    ctx.lineWidth = w / 300; //1;
     ctx.strokeStyle = '#5661FA';
     ctx.beginPath();
   
@@ -66,7 +66,7 @@ const Waveform = ({ hasAudio }) => {
   }, [hasAudio])
 
   return (
-    <canvas id="canvas" width={800} height={500} ref={canvasRef}/>
+    <canvas id="canvas" ref={canvasRef} style={ { width: "100%", height: "100%" } }/>
   )
 }
   

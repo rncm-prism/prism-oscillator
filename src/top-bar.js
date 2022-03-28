@@ -117,7 +117,7 @@ const TopBar = (props) => {
         <Typography variant="h6" style={ {marginLeft: "5px", flexGrow: 1} }>PRiSM Oscillator</Typography>
         <OscillatorTypeSelector value={oscType} handleChange={(e) => handleChangeOscType(e)}/>
         <IconButton className={classes.iconBtn} color="inherit" aria-label="toggle-audio" title={audioBtnTitle} onClick={handleHasAudio}>
-          { hasAudio ? <VolumeOffIcon/> : <VolumeUpIcon /> }
+          { hasAudio ? <VolumeUpIcon/> : <VolumeOffIcon /> }
         </IconButton>
         <IconButton className={classes.iconBtn} color="inherit" aria-label="refresh" title="Refresh" onClick={refresh}>
           <RefreshIcon />

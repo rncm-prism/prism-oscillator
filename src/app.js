@@ -1,8 +1,8 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
-import { Box, Typography } from '@material-ui/core';
+import { Box, Input, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { osc } from "./oscillator";
-import Waveform from "./canvas";
+import Waveform from "./waveform";
 import TopBar from "./top-bar";
 import FrequencyLimitControls from "./freq-limit-ctrls";
 import { TOTAL_FREQ_RANGE, DEFAULT_OSC_TYPE } from "./constants";
@@ -24,6 +24,26 @@ const useStyles = makeStyles((theme) => ({
   ctrls: {
     padding: "0px 20px"
   },
+  freqCtrl: {
+    width: "62px",
+    marginLeft: "8px"
+  },
+  freqCtrlLabel: {
+    display: "inline-block",
+  },
+  freqCtrlContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center" ,
+  },
+  waveformContainer: {
+    position: "absolute",
+    top: "180px",
+    bottom: "0px",
+    width: "100%",
+    padding: "0px 20px",
+    overflow: "hidden",
+  }
 }));
 
 const App = () => {
@@ -66,15 +86,24 @@ const App = () => {
       <TopBar { ...{ hasAudio, oscType, handleHasAudio, handleChangeOscType } }/>
       <Box className={classes.ctrls}>
         <FrequencyLimitControls { ...{ freqRange, setFreqRange } }/>
-        <Typography color="textSecondary" align="center">{`${freq || initFreq} Hz`}</Typography>
+        <Box className={classes.freqCtrlContainer}>
+          <InputLabel className={classes.freqCtrlLabel} htmlFor="freq">Current Frequency:</InputLabel>
+          <Input
+            className={classes.freqCtrl}
+            id="freq"
+            type="number"
+            value={freq}
+            min={350}
+            max={1050}
+            onChange={handleChangeFreq}
+          />
+        </Box>
       </Box>
-      <div id="toolbar">
-        <label htmlFor="freq">Frequency:</label>
-        <input id="freq" type="number" value={freq} min={350} max={1050} onChange={handleChangeFreq}></input>
-      </div>
-      <Waveform { ...{ hasAudio } }/>
+      <Box className={classes.waveformContainer}>
+        <Waveform { ...{ hasAudio } } />
+      </Box>
     </Box>
   )
 }
 
-export default App; 
+export default App;
