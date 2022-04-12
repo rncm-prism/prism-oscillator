@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css";
+//import "./style.css";
 
 import { AppBar, Toolbar, IconButton, Dialog, DialogContent, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';

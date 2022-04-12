@@ -95,7 +95,7 @@ const OscillatorTypeSelector = (props) => {
 const TopBar = (props) => {
   const classes = useStyles();
 
-  let { toggleSettingsDialog, toggleAboutDialog, toggleAudio, refresh, hasAudio, oscType, handleHasAudio, handleChangeOscType } = props
+  let { toggleSettingsDialog, toggleAboutDialog, refresh, hasAudio, oscType, handleHasAudio, handleChangeOscType } = props
   const [anchorElem, setAnchorElem] = useState(null);
 
   const handleOpenMenu = (event) => {

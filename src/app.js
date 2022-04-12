@@ -5,6 +5,8 @@ import { osc } from "./oscillator";
 import Waveform from "./waveform";
 import TopBar from "./top-bar";
 import FrequencyLimitControls from "./freq-limit-ctrls";
+import SettingsDialog from './settings-dialog';
+import AboutDialog from './about-dialog';
 import { TOTAL_FREQ_RANGE, DEFAULT_OSC_TYPE } from "./constants";
 
 // See https://www.robinwieruch.de/react-useeffect-only-on-update
@@ -46,16 +48,31 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const getRandomValueInRange = (min, max) => {
+  return Math.random() * (max - min) + min;
+}
+
+const getRandFreq = (range) => {
+  let [bottomFreq, topFreq] = range;
+  let freq = getRandomValueInRange(bottomFreq, topFreq + 1);
+  return Math.floor(freq);
+}
+
 const App = () => {
 
   const classes = useStyles();
 
   const initFreq = 440;
 
+  // Oscillator state.
   const [oscType, setOscType] = useState(DEFAULT_OSC_TYPE);
   const [freq, setFreq] = useState(initFreq);
   const [freqRange, setFreqRange] = useState(TOTAL_FREQ_RANGE);
   const [hasAudio, setHasAudio] = useState(false);
+
+  // Dialogs.
+  const [showSettingsDialog, toggleShowSettingsDialog] = useState(false);
+  const [showAboutDialog, toggleShowAboutDialog] = useState(false);
 
   const handleChangeOscType = (e) => {
     setOscType(e.currentTarget.getAttribute("value"));
@@ -81,9 +98,22 @@ const App = () => {
     hasAudio ? osc.start() : osc.stop();
   }, [hasAudio]);
 
+  const refresh = () => {
+    let newFreq = getRandFreq(freqRange);
+    setFreq(newFreq);
+  };
+
+  const toggleSettingsDialog = () => {
+    toggleShowSettingsDialog(!showSettingsDialog);
+  };
+
+  const toggleAboutDialog = () => {
+    toggleShowAboutDialog(!showAboutDialog);
+  };
+
   return (
     <Box>
-      <TopBar { ...{ hasAudio, oscType, handleHasAudio, handleChangeOscType } }/>
+      <TopBar { ...{ toggleSettingsDialog, toggleAboutDialog, refresh, hasAudio, oscType, handleHasAudio, handleChangeOscType } }/>
       <Box className={classes.ctrls}>
         <FrequencyLimitControls { ...{ freqRange, setFreqRange } }/>
         <Box className={classes.freqCtrlContainer}>
@@ -102,6 +132,12 @@ const App = () => {
       <Box className={classes.waveformContainer}>
         <Waveform { ...{ hasAudio } } />
       </Box>
+      <SettingsDialog
+        isOpen={showSettingsDialog}
+        handleClose={toggleSettingsDialog}
+        handleChangeOscType={handleChangeOscType}
+      />
+      <AboutDialog isOpen={showAboutDialog} handleClose={toggleAboutDialog}/>
     </Box>
   )
 }
