@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     minWidth: 120,
   },
+  radios: {
+    marginTop: 30
+  }
 }));
 
 const SettingsDialog = (props) => {
@@ -33,7 +36,7 @@ const SettingsDialog = (props) => {
       <form className={classes.form} noValidate>
         <FormControl className={classes.formControl} component="fieldset">
           <FormLabel component="legend">Choose Theme:</FormLabel>
-          <RadioGroup aria-label="theme" name="theme" value={currentTheme} onChange={handleChangeTheme}>
+          <RadioGroup className={classes.formControl} aria-label="theme" name="theme" value={currentTheme} onChange={handleChangeTheme}>
             <FormControlLabel value="light" control={<Radio />} label="Light" />
             <FormControlLabel value="dark" control={<Radio />} label="Dark" />
           </RadioGroup>

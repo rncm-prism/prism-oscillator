@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
-import { Box, Input, InputLabel } from '@material-ui/core';
+import { Box, Typography, Input, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { osc } from "./oscillator";
 import Waveform from "./waveform";
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   freqCtrlLabel: {
     display: "inline-block",
   },
-  freqCtrlContainer: {
+  freqDisplayContainer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center" ,
@@ -67,7 +67,8 @@ const App = () => {
   // Oscillator state.
   const [oscType, setOscType] = useState(DEFAULT_OSC_TYPE);
   const [freq, setFreq] = useState(initFreq);
-  const [freqRange, setFreqRange] = useState(TOTAL_FREQ_RANGE);
+  //const [freqRange, setFreqRange] = useState(TOTAL_FREQ_RANGE);
+  const [freqRange, setFreqRange] = useState([TOTAL_FREQ_RANGE[0], freq, TOTAL_FREQ_RANGE[1]]);
   const [hasAudio, setHasAudio] = useState(false);
 
   // Dialogs.
@@ -79,7 +80,10 @@ const App = () => {
   }
 
   const handleChangeFreq = (e) => {
-    setFreq(e.target.value);
+    const val = e.target.value;
+    if (val >= freqRange[0] && val <= freqRange[1]) {
+      setFreq(val);
+    }
   }
 
   const handleHasAudio = () => {
@@ -99,7 +103,9 @@ const App = () => {
   }, [hasAudio]);
 
   const refresh = () => {
-    let newFreq = getRandFreq(freqRange);
+    //let newFreq = getRandFreq(freqRange);
+    let newFreq = getRandFreq([freqRange[0], freqRange[2]]);
+    setFreqRange([freqRange[0], newFreq, freqRange[2]]);
     setFreq(newFreq);
   };
 
@@ -115,18 +121,9 @@ const App = () => {
     <Box>
       <TopBar { ...{ toggleSettingsDialog, toggleAboutDialog, refresh, hasAudio, oscType, handleHasAudio, handleChangeOscType } }/>
       <Box className={classes.ctrls}>
-        <FrequencyLimitControls { ...{ freqRange, setFreqRange } }/>
-        <Box className={classes.freqCtrlContainer}>
-          <InputLabel className={classes.freqCtrlLabel} htmlFor="freq">Current Frequency:</InputLabel>
-          <Input
-            className={classes.freqCtrl}
-            id="freq"
-            type="number"
-            value={freq}
-            min={350}
-            max={1050}
-            onChange={handleChangeFreq}
-          />
+        <FrequencyLimitControls { ...{ freqRange, setFreqRange, setFreq } }/>
+        <Box className={classes.freqDisplayContainer}>
+          <Typography variant="h5">{`${freq}Hz`}</Typography>
         </Box>
       </Box>
       <Box className={classes.waveformContainer}>
