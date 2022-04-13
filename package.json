@@ -9,7 +9,7 @@
     "start": "webpack-dev-server -d --config webpack.config.js --content-base public/ --progress --colors",
     "build": "webpack --config webpack.config.js",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d public"
   },
   "author": "Dr Christopher Melen",
   "license": "ISC",
