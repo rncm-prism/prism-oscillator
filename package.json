@@ -6,7 +6,7 @@
   "main": "./src/index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server -d --config webpack.config.js --content-base public/ --progress --colors",
+    "start": "webpack-dev-server -d --config webpack.config.js --progress --colors",
     "build": "webpack --config webpack.config.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d public"

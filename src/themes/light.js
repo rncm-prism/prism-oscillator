@@ -22,7 +22,7 @@ const theme = createMuiTheme({
     },
   },
   custom: {
-    logo: '/PRiSM-Logo-text-01-768x329.png'
+    logo: '/public/PRiSM-Logo-text-01-768x329.png'
   }
 })
 
