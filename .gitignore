@@ -1,5 +1,4 @@
 node_modules
 public/dist/*
-**/bundle.js
 **/.DS_Store
 **/Thumbs.db
